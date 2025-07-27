@@ -7,11 +7,11 @@ from methods.registrate_courier import RegistrateCourier
 class TestLoginCourier:
 
     @allure.title('Проверка статус кода при логине курьера с корректными данными')
-    def test_login_courier_status_code_true(self, delete_courier_for_login_tests):
+    def test_login_courier_status_code_true(self, delete_courier):
         registrate_courier = RegistrateCourier()
         login_courier = LoginCourier()
-        registrate_courier.registrate_courier(delete_courier_for_login_tests)
-        response, status_code, courier_id = login_courier.login_courier(delete_courier_for_login_tests)
+        registrate_courier.registrate_courier(delete_courier)
+        response, status_code, courier_id = login_courier.login_courier(delete_courier)
         assert status_code == 200
 
     @allure.title('Проверка текста ответа при логине курьера с несуществующим паролем и логином')
@@ -37,9 +37,9 @@ class TestLoginCourier:
         assert response["message"] == TextAnswer.lose_data and status_code == 400
 
     @allure.title('Проверка наличия id в тексте ответа при логине курьера')
-    def test_after_login_courier_is_id_in_response(self, delete_courier_for_login_tests):
+    def test_after_login_courier_is_id_in_response(self, delete_courier):
         login_courier = LoginCourier()
         registrate_courier = RegistrateCourier()
-        registrate_courier.registrate_courier(delete_courier_for_login_tests)
-        response, status_code, courier_id = login_courier.login_courier(delete_courier_for_login_tests)
+        registrate_courier.registrate_courier(delete_courier)
+        response, status_code, courier_id = login_courier.login_courier(delete_courier)
         assert "id" in response

@@ -6,9 +6,9 @@ import allure
 class TestRegistrateCourier:
 
     @allure.title('Проверка статус кода и текста ответа при создании курьера с валидными данными')
-    def test_registration_true_status_code(self, delete_courier_for_registrate_tests):
+    def test_registration_true_status_code(self, delete_courier):
         registrate_courier = RegistrateCourier()
-        response, status_code = registrate_courier.registrate_courier(delete_courier_for_registrate_tests)
+        response, status_code = registrate_courier.registrate_courier(delete_courier)
         assert status_code == 201 and response == TextAnswer.true_ok
 
     @allure.title('Проверка текста ответа при регистрации курьера с отсутствующим паролем')
@@ -20,9 +20,9 @@ class TestRegistrateCourier:
         assert response["message"] == TextAnswer.insufficient_data_for_create_profile and status_code == 400
 
     @allure.title('Регистрация курьера с паролем и логином, которые уже использовались')
-    def test_text_message_after_register_two_same_couriers(self, delete_courier_for_registrate_tests):
+    def test_text_message_after_register_two_same_couriers(self, delete_courier):
         registrate_courier = RegistrateCourier()
-        registrate_courier.registrate_courier(delete_courier_for_registrate_tests)
-        response, status_code = registrate_courier.registrate_courier(delete_courier_for_registrate_tests)
+        registrate_courier.registrate_courier(delete_courier)
+        response, status_code = registrate_courier.registrate_courier(delete_courier)
 
         assert response["message"] == TextAnswer.reused_username and status_code == 409

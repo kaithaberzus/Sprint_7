@@ -13,15 +13,7 @@ from methods.delete_courier import DeleteCourier
 
 
 @pytest.fixture()
-def delete_courier_for_registrate_tests():
-    data_with_generate = DataWithGenerate()
-    data = data_with_generate.courier_true_data()
-    yield data
-    courier_id = requests.post(f'{config.BASE_URL}{config.REGISTRATE_COURIER}/login', data=data).json().get('id')
-    requests.delete(f'{config.BASE_URL}{config.REGISTRATE_COURIER}/{courier_id}')
-
-@pytest.fixture()
-def delete_courier_for_login_tests():
+def delete_courier():
     data_with_generate = DataWithGenerate()
     data = data_with_generate.courier_true_data()
     yield data
@@ -44,6 +36,7 @@ def complete_order():
     registrate_courier = RegistrateCourier()
     login = LoginCourier()
     create_order = CreateOrder()
+    delete_courier = DeleteCourier()
 
     data_with_generate = DataWithGenerate()
     data_for_order = data_with_generate.single_order_data()
@@ -56,3 +49,4 @@ def complete_order():
 
     yield get_order_by_track[2], login[2]
     complete_order.complete_order(get_order_by_track[2])
+    delete_courier.delete_courier_with_id(login[2])
